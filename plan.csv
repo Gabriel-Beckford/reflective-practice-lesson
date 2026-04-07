@@ -1,4 +1,4 @@
-Section,Name,Description ,Column 1,Kolb Phase,Notes
+Section,Name,Description ,User Instructions,Kolb Phase,Notes
 1,API Key entry,The user needs to provide a Google API key otherwise none of the AI features will work,,,
 1,Title Slide,,,,
 1,Grounding Activity,,,,
