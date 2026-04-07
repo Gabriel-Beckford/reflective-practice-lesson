@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reflective Practice Lesson</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="spa" id="app" aria-live="polite">
+      <header class="spa__top-nav glass-card">
+        <span class="badge" id="sectionBadge">Section</span>
+        <div class="progress-wrap">
+          <span class="progress-text" id="slideProgress">Slide 0 of 0</span>
+          <progress id="slideProgressBar" value="0" max="1"></progress>
+        </div>
+      </header>
+
+      <section class="slide glass-card" id="slide" aria-label="Lesson slide content">
+        <h1 id="slideTitle">Loading lesson…</h1>
+        <p class="slide-meta" id="slideMeta"></p>
+        <div class="slide-content" id="slideBody"></div>
+      </section>
+
+      <footer class="spa__bottom-nav glass-card" aria-label="Slide navigation controls">
+        <button class="btn" id="prevBtn" type="button">Previous</button>
+        <button class="btn btn--primary" id="nextBtn" type="button">Next</button>
+      </footer>
+    </main>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>
