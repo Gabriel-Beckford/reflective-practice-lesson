@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zen Pond</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            /* Extremely slow, soft gradient shifting for light quality */
+            background: #e6ebe8;
+            animation: lightShift 90s infinite alternate ease-in-out;
+            cursor: crosshair;
+        }
+
+        /* Pale, soothing earth and water tones */
+        @keyframes lightShift {
+            0%   { background-color: #e8ede8; } /* Morning mist */
+            25%  { background-color: #e3e8e1; } /* Pale matcha */
+            50%  { background-color: #eeeae4; } /* Warm linen */
+            75%  { background-color: #e6e3e8; } /* Soft lavender dusk */
+            100% { background-color: #e0e6ea; } /* Twilight blue */
+        }
+
+        /* SVG Noise filter to give the whole canvas a tactile "art paper" feel */
+        #texture {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.25;
+            mix-blend-mode: multiply;
+            z-index: 10;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        #overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Georgia', serif;
+            color: rgba(120, 130, 125, 0.7);
+            font-size: 1.2rem;
+            font-style: italic;
+            letter-spacing: 2px;
+            pointer-events: none;
+            transition: opacity 3s ease-out;
+            text-align: center;
+            z-index: 20;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Paper texture overlay -->
+    <svg id="texture">
+        <filter id="noise">
+            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/>
+            <feColorMatrix type="matrix" values="1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 0.1 0" />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#noise)"/>
+    </svg>
+
+    <div id="overlay">Be still.<br><br><span style="font-size: 0.8rem; font-family: sans-serif; letter-spacing: 4px; font-style: normal; text-transform: uppercase;">Touch the water</span></div>
+    <canvas id="pond"></canvas>
+
+<script>
+    const canvas = document.getElementById('pond');
+    const ctx = canvas.getContext('2d');
+    
+    let width, height;
+    let fishes =[];
+    let ripples = [];
+    let lilies = [];
+
+    // Refined, subtle art palette
+    const fishPalettes =[
+        { body: 'rgba(235, 120, 95, 0.85)', fins: 'rgba(235, 120, 95, 0.4)' },  // Soft Vermillion
+        { body: 'rgba(255, 252, 248, 0.9)', fins: 'rgba(255, 252, 248, 0.5)' },  // Pearl White
+        { body: 'rgba(60, 70, 75, 0.8)', fins: 'rgba(60, 70, 75, 0.4)' },        // Ink Black
+        { body: 'rgba(220, 180, 110, 0.85)', fins: 'rgba(220, 180, 110, 0.4)' }  // Pale Gold
+    ];
+
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // --- CLASSES ---
+
+    class Ripple {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.radius = 0;
+            this.maxRadius = 150 + Math.random() * 80;
+            this.speed = 0.25; 
+            this.alpha = 0.8;
+        }
+
+        update() {
+            // Cubic easing out for speed to make it look like real fluid displacement
+            let progress = this.radius / this.maxRadius;
+            this.radius += this.speed * (1 - progress + 0.1);
+            this.alpha = 0.8 * (1 - progress); 
+            return this.radius < this.maxRadius;
+        }
+
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.strokeStyle = `rgba(255, 255, 255, ${this.alpha})`;
+            ctx.lineWidth = 1.5 * this.alpha;
+            ctx.stroke();
+
+            // Inner echo
+            if (this.radius > 20) {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius - 20, 0, Math.PI * 2);
+                ctx.strokeStyle = `rgba(255, 255, 255, ${this.alpha * 0.3})`;
+                ctx.lineWidth = 0.5;
+                ctx.stroke();
+            }
+        }
+    }
+
+    class Lily {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.size = 35 + Math.random() * 20;
+            this.angle = Math.random() * Math.PI * 2;
+            this.drift = (Math.random() - 0.5) * 0.0002;
+            this.padColor = `rgba(135, 155, 145, 0.8)`; // Deep, soft sage
+            this.hasFlower = Math.random() > 0.4;
+        }
+
+        update() {
+            this.angle += this.drift;
+        }
+
+        draw() {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate(this.angle);
+
+            // Soft blur shadow to simulate sitting above the pond floor
+            ctx.shadowColor = 'rgba(80, 95, 90, 0.15)';
+            ctx.shadowBlur = 20;
+            ctx.shadowOffsetY = 10;
+
+            // Lily Pad - Organic heart/notch shape
+            ctx.beginPath();
+            ctx.arc(0, 0, this.size, 0.15, Math.PI * 2 - 0.15);
+            ctx.quadraticCurveTo(-this.size * 0.2, 0, 0, 0); // Inner notch
+            ctx.closePath();
+            ctx.fillStyle = this.padColor;
+            ctx.fill();
+
+            // Aesthetic vein lines
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.lineWidth = 0.5;
+            for(let i=0; i<7; i++) {
+                ctx.rotate((Math.PI * 2) / 7);
+                ctx.beginPath();
+                ctx.moveTo(0,0);
+                ctx.lineTo(this.size * 0.8, 0);
+                ctx.stroke();
+            }
+
+            // Minimalist Geometric Lotus
+            if (this.hasFlower) {
+                ctx.shadowColor = 'transparent';
+                const petals = 8;
+                
+                // Outer glowing petals
+                ctx.fillStyle = 'rgba(255, 240, 245, 0.6)';
+                for (let i = 0; i < petals; i++) {
+                    ctx.rotate((Math.PI * 2) / petals);
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.quadraticCurveTo(this.size * 0.2, this.size * 0.4, 0, this.size * 0.6);
+                    ctx.quadraticCurveTo(-this.size * 0.2, this.size * 0.4, 0, 0);
+                    ctx.fill();
+                }
+
+                // Inner bright petals
+                ctx.fillStyle = 'rgba(255, 250, 252, 0.9)';
+                ctx.rotate(Math.PI / petals); // offset
+                for (let i = 0; i < petals; i++) {
+                    ctx.rotate((Math.PI * 2) / petals);
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.quadraticCurveTo(this.size * 0.1, this.size * 0.2, 0, this.size * 0.4);
+                    ctx.quadraticCurveTo(-this.size * 0.1, this.size * 0.2, 0, 0);
+                    ctx.fill();
+                }
+                
+                // Lotus Center (Pistil)
+                ctx.beginPath();
+                ctx.arc(0, 0, this.size * 0.08, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(245, 215, 140, 0.9)'; // Pale glowing gold
+                ctx.fill();
+            }
+
+            ctx.restore();
+        }
+    }
+
+    class Fish {
+        constructor() {
+            this.palette = fishPalettes[Math.floor(Math.random() * fishPalettes.length)];
+            
+            // Physics
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.vx = 0;
+            this.vy = 0;
+            this.angle = Math.random() * Math.PI * 2;
+            
+            // Increased speed so they move noticeably but still gracefully
+            this.speed = 0.5 + Math.random() * 0.4; 
+            
+            this.turnOffset = Math.random() * 1000;
+            this.scale = 0.8 + Math.random() * 0.6; 
+            
+            this.numNodes = 14; 
+            this.nodes =[];
+            let targetDist = 5 * this.scale;
+            
+            // Pre-unspool the fish so it appears fully formed instantly
+            for(let i=0; i<this.numNodes; i++) {
+                this.nodes.push({
+                    x: this.x - Math.cos(this.angle) * (i * targetDist),
+                    y: this.y - Math.sin(this.angle) * (i * targetDist)
+                });
+            }
+
+            // Width of the fish at each node (Head -> Body -> Tail -> Fin)
+            this.widths =[
+                3, 6, 8, 8.5, 8, 7, 5.5, 4, 3, 2, 1.5, 
+                4, 5, 1 
+            ].map(w => w * this.scale);
+        }
+
+        update() {
+            const time = Date.now() * 0.0001;
+            this.angle += Math.sin(time + this.turnOffset) * 0.005;
+
+            let targetVx = Math.cos(this.angle) * this.speed;
+            let targetVy = Math.sin(this.angle) * this.speed;
+
+            // Ripple displacement
+            let nudgeX = 0;
+            let nudgeY = 0;
+            
+            ripples.forEach(r => {
+                let dx = this.nodes[0].x - r.x;
+                let dy = this.nodes[0].y - r.y;
+                let dist = Math.sqrt(dx * dx + dy * dy);
+                
+                if (Math.abs(dist - r.radius) < 40) {
+                    let force = (40 - Math.abs(dist - r.radius)) / 40;
+                    let pushAngle = Math.atan2(dy, dx);
+                    // Slightly stronger outward drift to account for higher speed
+                    nudgeX += Math.cos(pushAngle) * force * 0.4;
+                    nudgeY += Math.sin(pushAngle) * force * 0.4;
+                }
+            });
+
+            this.vx += (targetVx + nudgeX - this.vx) * 0.08;
+            this.vy += (targetVy + nudgeY - this.vy) * 0.08;
+
+            this.nodes[0].x += this.vx;
+            this.nodes[0].y += this.vy;
+
+            const margin = 150;
+            if (this.nodes[0].x < -margin) this.nodes[0].x = width + margin;
+            if (this.nodes[0].x > width + margin) this.nodes[0].x = -margin;
+            if (this.nodes[0].y < -margin) this.nodes[0].y = height + margin;
+            if (this.nodes[0].y > height + margin) this.nodes[0].y = -margin;
+
+            // Kinematic spine following
+            for (let i = 1; i < this.numNodes; i++) {
+                let dx = this.nodes[i-1].x - this.nodes[i].x;
+                let dy = this.nodes[i-1].y - this.nodes[i].y;
+                let dist = Math.sqrt(dx * dx + dy * dy);
+                
+                let targetDist = 5 * this.scale;
+                
+                if (dist > targetDist) {
+                    this.nodes[i].x = this.nodes[i-1].x - (dx / dist) * targetDist;
+                    this.nodes[i].y = this.nodes[i-1].y - (dy / dist) * targetDist;
+                }
+            }
+        }
+
+        draw() {
+            ctx.lineJoin = "round";
+            ctx.lineCap = "round";
+
+            ctx.shadowColor = 'rgba(70, 85, 90, 0.15)';
+            ctx.shadowBlur = 20;
+            ctx.shadowOffsetY = 15;
+
+            if (this.nodes[2] && this.nodes[3]) {
+                let dx = this.nodes[2].x - this.nodes[3].x;
+                let dy = this.nodes[2].y - this.nodes[3].y;
+                let angle = Math.atan2(dy, dx);
+                
+                ctx.fillStyle = this.palette.fins;
+                ctx.beginPath();
+                
+                ctx.save();
+                ctx.translate(this.nodes[2].x, this.nodes[2].y);
+                ctx.rotate(angle + Math.PI/3);
+                ctx.ellipse(this.scale * 8, 0, this.scale * 10, this.scale * 4, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+
+                ctx.save();
+                ctx.translate(this.nodes[2].x, this.nodes[2].y);
+                ctx.rotate(angle - Math.PI/3);
+                ctx.ellipse(this.scale * 8, 0, this.scale * 10, this.scale * 4, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+
+            ctx.fillStyle = this.palette.body;
+            ctx.beginPath();
+
+            let leftPoints =[];
+            let rightPoints =[];
+
+            for (let i = 0; i < this.numNodes; i++) {
+                let angle;
+                if (i === 0) {
+                    angle = Math.atan2(this.nodes[0].y - this.nodes[1].y, this.nodes[0].x - this.nodes[1].x);
+                } else if (i === this.numNodes - 1) {
+                    angle = Math.atan2(this.nodes[i-1].y - this.nodes[i].y, this.nodes[i-1].x - this.nodes[i].x);
+                } else {
+                    let dx = this.nodes[i-1].x - this.nodes[i+1].x;
+                    let dy = this.nodes[i-1].y - this.nodes[i+1].y;
+                    angle = Math.atan2(dy, dx);
+                }
+
+                let normal = angle + Math.PI / 2;
+                let w = this.widths[i];
+
+                leftPoints.push({
+                    x: this.nodes[i].x + Math.cos(normal) * w,
+                    y: this.nodes[i].y + Math.sin(normal) * w
+                });
+                
+                rightPoints.push({
+                    x: this.nodes[i].x - Math.cos(normal) * w,
+                    y: this.nodes[i].y - Math.sin(normal) * w
+                });
+            }
+
+            ctx.moveTo(leftPoints[0].x, leftPoints[0].y);
+            for (let i = 1; i < leftPoints.length; i++) {
+                ctx.lineTo(leftPoints[i].x, leftPoints[i].y);
+            }
+            
+            for (let i = rightPoints.length - 1; i >= 0; i--) {
+                ctx.lineTo(rightPoints[i].x, rightPoints[i].y);
+            }
+            
+            ctx.closePath();
+            ctx.fill();
+            
+            ctx.shadowColor = 'transparent';
+
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.lineWidth = 1 * this.scale;
+            ctx.beginPath();
+            ctx.moveTo(this.nodes[0].x, this.nodes[0].y);
+            for(let i=1; i<7; i++) {
+                ctx.lineTo(this.nodes[i].x, this.nodes[i].y);
+            }
+            ctx.stroke();
+        }
+    }
+
+    // --- INITIALIZATION ---
+
+    function init() {
+        // Place Lilies with collision detection so they spread out organically
+        const numLilies = 7;
+        for (let i = 0; i < numLilies; i++) {
+            let placed = false;
+            let attempts = 0;
+            
+            while (!placed && attempts < 50) {
+                let testX = Math.random() * width;
+                let testY = Math.random() * height;
+                let collision = false;
+
+                // Check distance against all existing lilies
+                for (let j = 0; j < lilies.length; j++) {
+                    let dx = testX - lilies[j].x;
+                    let dy = testY - lilies[j].y;
+                    let dist = Math.sqrt(dx*dx + dy*dy);
+                    if (dist < 180) { // Minimum distance between lilies
+                        collision = true;
+                        break;
+                    }
+                }
+
+                if (!collision) {
+                    lilies.push(new Lily(testX, testY));
+                    placed = true;
+                }
+                attempts++;
+            }
+        }
+
+        // Add fish
+        const numFishes = 9;
+        for (let i = 0; i < numFishes; i++) {
+            fishes.push(new Fish());
+        }
+    }
+
+    // --- INTERACTION ---
+
+    function createRipple(e) {
+        const overlay = document.getElementById('overlay');
+        if(overlay.style.opacity !== '0') {
+            overlay.style.opacity = 0;
+        }
+        
+        ripples.push(new Ripple(e.clientX, e.clientY));
+    }
+
+    canvas.addEventListener('mousedown', createRipple);
+    canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        for(let i=0; i < e.touches.length; i++){
+            createRipple(e.touches[i]);
+        }
+    }, {passive: false});
+
+    // --- MAIN LOOP ---
+
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+
+        lilies.forEach(lily => {
+            lily.update();
+            lily.draw();
+        });
+
+        fishes.forEach(fish => {
+            fish.update();
+            fish.draw();
+        });
+
+        for (let i = ripples.length - 1; i >= 0; i--) {
+            if (!ripples[i].update()) {
+                ripples.splice(i, 1);
+            } else {
+                ripples[i].draw();
+            }
+        }
+
+        requestAnimationFrame(animate);
+    }
+
+    // Start
+    init();
+    animate();
+
+</script>
+</body>
+</html>
