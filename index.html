@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reflective Practice Lesson</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .api-key-slide { max-width: 860px; margin: 0 auto; }
+    .api-key-form { display: grid; gap: 10px; margin-top: 12px; }
+    .api-key-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .api-key-row input { flex: 1; min-width: 260px; }
+    .api-help { color: var(--md-on-surface-variant); margin: 8px 0 0; font-size: .9rem; }
+    .api-error { color: var(--md-error); margin: 6px 0 0; font-weight: 600; min-height: 1.3em; }
+    .key-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
+    .key-status { font-size: .9rem; color: var(--md-secondary); font-weight: 600; }
+    .ai-area { display: grid; gap: 10px; margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <main>
+    <div id="slide-container">
+      <section class="slide active api-key-slide" aria-labelledby="api-key-title">
+        <div class="text-region">
+          <h1 id="api-key-title" class="slide-question">Connect your AI key</h1>
+          <p class="slide-copy">Add your API key to enable model-driven chat and guidance tools for this session.</p>
+
+          <form class="api-key-form" id="api-key-form" novalidate>
+            <label for="api-key-input" class="slide-copy">Session API key</label>
+            <div class="api-key-row">
+              <input
+                id="api-key-input"
+                name="api-key"
+                type="password"
+                autocomplete="off"
+                spellcheck="false"
+                placeholder="Paste your API key"
+                aria-describedby="api-key-help api-key-error"
+              />
+              <button type="submit" class="submit-btn">Connect</button>
+            </div>
+            <p id="api-key-help" class="api-help">Stored only in this browser tab/session and removed when the session ends.</p>
+            <p id="api-key-error" class="api-error" role="alert" aria-live="polite"></p>
+          </form>
+
+          <div class="key-actions">
+            <button id="forget-key-btn" type="button" class="cta-btn">Forget key</button>
+            <span id="key-status" class="key-status" aria-live="polite"></span>
+          </div>
+
+          <div class="ai-area">
+            <button data-ai-dependent type="button" class="cta-btn">Ask AI follow-up</button>
+            <button data-ai-dependent type="button" class="cta-btn">Generate feedback</button>
+            <button data-ai-dependent type="button" class="cta-btn">Continue with AI coach</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const SESSION_API_KEY = 'reflectivePracticeSessionApiKey';
+    const MIN_KEY_LENGTH = 12;
+
+    const modelState = {
+      selectedModel: null,
+      isConnected: false,
+    };
+
+    const chatState = {
+      messages: [],
+      draft: '',
+    };
+
+    const apiKeyForm = document.getElementById('api-key-form');
+    const apiKeyInput = document.getElementById('api-key-input');
+    const apiKeyError = document.getElementById('api-key-error');
+    const keyStatus = document.getElementById('key-status');
+    const forgetKeyBtn = document.getElementById('forget-key-btn');
+
+    function getStoredKey() {
+      return sessionStorage.getItem(SESSION_API_KEY) || '';
+    }
+
+    function setError(message) {
+      apiKeyError.textContent = message;
+    }
+
+    function clearError() {
+      apiKeyError.textContent = '';
+    }
+
+    function hasValidKey(key) {
+      return typeof key === 'string' && key.trim().length >= MIN_KEY_LENGTH;
+    }
+
+    function setAiDependentControlsEnabled(enabled) {
+      document.querySelectorAll('[data-ai-dependent]').forEach((button) => {
+        button.disabled = !enabled;
+        button.setAttribute('aria-disabled', String(!enabled));
+      });
+    }
+
+    function resetModelAndChatStates() {
+      modelState.selectedModel = null;
+      modelState.isConnected = false;
+      chatState.messages = [];
+      chatState.draft = '';
+    }
+
+    function updateUiFromSessionKey() {
+      const key = getStoredKey();
+      const valid = hasValidKey(key);
+      setAiDependentControlsEnabled(valid);
+      keyStatus.textContent = valid ? 'Key connected for this session.' : 'No active key in this session.';
+      if (valid) {
+        modelState.isConnected = true;
+      }
+    }
+
+    apiKeyForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const key = apiKeyInput.value.trim();
+
+      if (!key) {
+        setError('API key is required. Paste your key and try again.');
+        setAiDependentControlsEnabled(false);
+        return;
+      }
+
+      if (key.length < MIN_KEY_LENGTH) {
+        setError(`API key is too short. Use at least ${MIN_KEY_LENGTH} characters.`);
+        setAiDependentControlsEnabled(false);
+        return;
+      }
+
+      sessionStorage.setItem(SESSION_API_KEY, key);
+      clearError();
+      apiKeyInput.value = '';
+      modelState.isConnected = true;
+      updateUiFromSessionKey();
+    });
+
+    forgetKeyBtn.addEventListener('click', () => {
+      sessionStorage.removeItem(SESSION_API_KEY);
+      resetModelAndChatStates();
+      setAiDependentControlsEnabled(false);
+      clearError();
+      keyStatus.textContent = 'Session key forgotten. Model and chat state reset.';
+    });
+
+    updateUiFromSessionKey();
+  </script>
+</body>
+</html>
