@@ -1,11 +1,13 @@
-1	Title Slide				
-1	Grounding Activity				
-1	ILOs				
-2	Descrribe a critical incident		 In Module 1: Returning to social work we asked you to reflect on a critical incident so you could understand a little more about how you approach your practice and your learning needs. This is called experiential learning, and is a way of approaching the reflective cycle. Let’s go through your critical incident again, briefly. 
-	CE	"*AI should save response in local storage
+Section,Name,Description ,Column 1,Kolb Phase,Notes
+1,API Key entry,The user needs to provide a Google API key otherwise none of the AI features will work,,,
+1,Title Slide,,,,
+1,Grounding Activity,,,,
+1,ILOs,,,,
+2,Descrribe a critical incident,," In Module 1: Returning to social work we asked you to reflect on a critical incident so you could understand a little more about how you approach your practice and your learning needs. This is called experiential learning, and is a way of approaching the reflective cycle. Let’s go through your critical incident again, briefly. 
+",CE,"*AI should save response in local storage
 *Student to communicate with AI in a standard chatbot interface
 *AI asks the student four questions, one question for each phase of Kolb's cycle. "
-2	Understanding Kolb's experiential learning cycle		Match the stages  of Kolb’s cycle with the correct description	CE	"*Students match these labels with the different parts of their response.
+2,Understanding Kolb's experiential learning cycle,,Match the stages  of Kolb’s cycle with the correct description,CE,"*Students match these labels with the different parts of their response.
 *Student critical incident text should be displayed and these descriptions mapped on
 *Labelling each section of the student's resonse with a number and then adding a dropdown menu to each of the phase descriptors below might be easier
 
@@ -18,7 +20,7 @@ Abstract Conceptualisation - At this stage, learners use ideas, logical approach
 Active Experimentation - At an active stage, the learners show an active learning experience by experimenting with different situations. At the active experimentation stage, the learners take a practical approach, rather than simply observing a situation.
 
 "
-2	Understanding Kolb's experiential learning cycle	The student is still learning how the cycle works and so needs to think about the kinds of questions they can ask at each phase	What other questions could we ask? Match the questions to the different phases of your micro-reflection	CE	"*AI to choose 2-3 from each phase
+2,Understanding Kolb's experiential learning cycle,The student is still learning how the cycle works and so needs to think about the kinds of questions they can ask at each phase,What other questions could we ask? Match the questions to the different phases of your micro-reflection,CE,"*AI to choose 2-3 from each phase
 
 CE
 
@@ -54,9 +56,9 @@ When will you do things differently next time?
 What support do you need to achieve this?
 What will you do next after you’ve taken these steps?
 Can you think of other situations where you could apply your conclusions?"
-2	Understanding Kolb's experiential learning cycle		Are we understanding the situation or are we buildlng new knowledge?	CE	"*Display text
+2,Understanding Kolb's experiential learning cycle,,Are we understanding the situation or are we buildlng new knowledge?,CE,"*Display text
 *Student to select grasping knowledge or constructing knowledge from dropdown menus"
-2	Understanding Kolb's experiential learning cycle		Let's explore our reflective process	RO	"*Chatbot interface
+2,Understanding Kolb's experiential learning cycle,,Let's explore our reflective process,RO,"*Chatbot interface
 
 Have our class reflective processes been outcome oriented or process oriented?
 Are they grounded in empirical or experimental facts or in experience?
@@ -65,7 +67,7 @@ Can you give examples of thinking, feeling, perceiving and behaving from your re
 How has your immersion in the Haitian context changedlearning process, positively or negatively?
 Can you give an example of a time when you learned a key lesson from  your classroom experience on this programe?
 "
-2	Exploring experiential learning		Excellent work. In experiential learning, our focus is transforming our knowledge into experience. 	AC	"*Display this in a two level menu
+2,Exploring experiential learning,,"Excellent work. In experiential learning, our focus is transforming our knowledge into experience. ",AC,"*Display this in a two level menu
 
 1a)The whole process is governed by six principles
 Learning is best conceived of as an ongoing process, not in terms of outcomes. 
@@ -81,11 +83,11 @@ Learning is best conceived of as an ongoing process, not in terms of outcomes.
 6a)Learning is the process of creating knowledge. 
 6b)This is achieved through interaction between subjective life experiences and more objective human cultural experience
 "
-2	Exploring experiential learning		"If learning is to occur, it requires a space for it to take place. While, for most, the concept of learning space first conjures up the image of the physical classroom environment, it is much broader and multi-dimensional. Dimensions of learning space include physical, cultural, institutional, social and psychological aspects
+2,Exploring experiential learning,,"If learning is to occur, it requires a space for it to take place. While, for most, the concept of learning space first conjures up the image of the physical classroom environment, it is much broader and multi-dimensional. Dimensions of learning space include physical, cultural, institutional, social and psychological aspects
 
 A systematic reflection should consider the learning space holistically. 
 Select one of the dimensions to discuss them in the context of your critical incident.
-"	AC	"*Screen 1Learner clicks on one of the dimensions. The sub-levels will appear. They should select one
+",AC,"*Screen 1Learner clicks on one of the dimensions. The sub-levels will appear. They should select one
 *Screen 2 They can then discuss this with the AI
 
 1 Psychological
@@ -117,10 +119,10 @@ Language
 Classrooms
 Architecture
 Environment"
-3	Evaluating reflective writing		"Evaluation Instructions
+3,Evaluating reflective writing,,"Evaluation Instructions
 
 Now you’ll evaluate samples of reflective writing. This will help you to deepen your reflective practice and make it more systematic 
-"	AC	"
+",AC,"
 *Display the assessment criteria and text side by side. You may need to collapse them into menus for mobile
 *Chatbot interface for students to communicate their assessment with the AI
 ### 1. Concrete experience: Immediacy and felt engagement
@@ -131,7 +133,7 @@ Now you’ll evaluate samples of reflective writing. This will help you to deepe
 *   **1 (Limited):** Vague, generalized, or abstract. No concrete, felt experience anchors the reflection.
 
 <text>Last Tuesday, I taught  our B1 class a lesson on the present perfect. We focused on using it to tell a friend about places they had visited. We use weak TBLT and during the input phase, students were slower than normal in responding and often gave very short disengaged responses. During the task phase I found students silent in their breakout rooms. Cameras were off, mics remained muted - or didn't, causing disruption. In the subsequent feedback session, I presented my onscreen whiteboard and asked students to annotate, but the response times had lengthened even further so as to make the activity unworkable. </text>"
-3	Evaluating reflective writing			AC	"### 2. Reflective observation: Deliberate, multiperspectival re-examination
+3,Evaluating reflective writing,,,AC,"### 2. Reflective observation: Deliberate, multiperspectival re-examination
 *   **Focus:** Assesses whether the writer steps back to patiently re-examine the experience, feelings, and outcomes from more than one viewpoint.
 *   **4 (Strong):** Genuine reflective distance. Multiple perspectives (others' viewpoints, competing interpretations) are actively explored to deepen understanding.
 *   **3 (Secure):** Clear reflective distance. Acknowledges more than one perspective, though exploration isn't fully sustained.
@@ -148,7 +150,7 @@ During the lesson itself, the main locus of attention was on pedagogical quality
 The exit survey surprised me however. I received detailed, engaged feedback, which opened up a route of inquiry I hadn't pursued. They were all saying much the same thing- the teacher needs to choose topics that are relevant and useful. During the lesson, one student had intimated that they didn't understand the topic. One of the most common responses was a slightly dismissive 'I don't know' and a few times, questions were met with an unmuted mic and sigh.
 
 This all left a mark and I recall feeling deeply discouraged. The feedback was unilaterally and concertedly negative and, connecting this to previous experiences, there was an emergent pattern - I encountered the same reaction during a lesson on TOWIE, the students responded in much the same way and were, in fact, more outspoken about the irrelevance and utility of the topic. I had spoken to a colleague about this, and she mentioned that the same thing had happened to her when she started using an Oxford coursebook. The students rejected it out of hand she said and she promptly switched back to dogme style lessons, which she claimed they loved.</text>"
-3	Evaluating reflective writing			AC	"### 3. Abstract conceptualisation: Conceptual transformation
+3,Evaluating reflective writing,,,AC,"### 3. Abstract conceptualisation: Conceptual transformation
 *   **Focus:** Assesses whether the experience is transformed into a principle, concept, or explanatory understanding using logic and symbolic representation.
 *   **4 (Strong):** Derives a clear explanatory insight using theory, research, or pattern recognition. Builds a new explanatory account or revises prior understanding.
 *   **3 (Secure):** Plausible concept developed, but it is somewhat narrow, under-elaborated, or applied rather than constructed from the experience.
@@ -163,7 +165,7 @@ This all left a mark and I recall feeling deeply discouraged. The feedback was u
 A lesson requiring them to talk about holidays and travels in a country devastated by natural disasters and armed violence was not context-sensitive. I was asking them to relate experiences they had little to no familiarity with - experiences which they aspired to have but which may have been unattainable. The lifestyles the lesson conjured up were ones of WASPish luxury and ease. Some activities for instance talked about 5 star hotels and luxury spa retreats. None of my students have travelled outside Haiti.
 
  I would hypothesise that for students living under conditions of exceptional precarity marked by extremes of structural and personal violence, this may have brought home their lack of mobility and the constraints imposed upon them by the  ongoing societal collapse, producing affective barriers to learning. This is supported when i triangulate evidence from my colleague and my previous lesson. In all three cases, the lesson content itself provoked a direct and marked reaction. I recognise that there are other possibilities, for instance, perceived pedagogical value or even teaching methodology - students may prefer dialogic, non-linear class types.</text>"
-3	Evaluating reflective writing			AC	"### 4. Active experimentation: Hypothesis-testing action
+3,Evaluating reflective writing,,,AC,"### 4. Active experimentation: Hypothesis-testing action
 *   **Focus:** Assesses whether conceptual learning is turned into purposeful future action that acts as a testable hypothesis.
 *   **4 (Strong):** Proposes a specific, context-sensitive action linked to conceptual insight. Framed as a test: what they will do, expected outcomes, and how they will measure success.
 *   **3 (Secure):** Reasonable future action proposed with links to the conceptual phase, but its testable/experimental quality is only partly developed.
@@ -174,7 +176,7 @@ A lesson requiring them to talk about holidays and travels in a country devastat
 <text> My task  for my next lesson then is to plan a class grounded in a Haitian cultural tradition, which draws on the lived experiences of the students in my class. I can draw on our needs analyses to inform the lesson content and also to help me to prepare alternatives and contingency materials. I will assess the efficacy of this intervention through exit surveys adapted to focus on materials and pre-lesson and then interpret the results post lesson. I will also run the materials by my colleagues. I will also continue to observe other factors to ensure that my diagnosis of the situation is correct. Peer observation will be useful here. 
 To inform my planning process I will send out questionnaires to get an initial sense of what my students value and conduct  focus groups to get an even richer picture of what matters for them. This will be an ongoing process ad I will  use the insights gleaned from the process  to rethink materials design and classroom policy, shaping learning around my students and their needs. </text>
 "
-3	Evaluating reflective writing			AC	"### 5. Integrity of the experiential cycle
+3,Evaluating reflective writing,,,AC,"### 5. Integrity of the experiential cycle
 *   **Focus:** Assesses whether the reflection enacts a genuine, coherent, and cumulative transformation through all four phases, rather than just filling out a template.
 *   **4 (Strong):** Coherent, cumulative movement. Observation grows from experience; conceptualization from observation; experimentation from conceptualization.
 *   **3 (Secure):** Most transitions are clear, but one link is weaker or formulaic.
@@ -184,28 +186,28 @@ To inform my planning process I will send out questionnaires to get an initial s
 
 <text> [display the full text here] </text>
 "
-3	Evaluating reflective writing		"Think about the examples we just reviewed, where are the points of resonance with your critical incident?
-"	AC	
-4	Reflective writing	"Game. 
+3,Evaluating reflective writing,,"Think about the examples we just reviewed, where are the points of resonance with your critical incident?
+",AC,
+4,Reflective writing,"Game. 
 Design a relaxing, soothing game. 
 Pond
 Gold fishes swim in the pond
 User clicks on water to create ripples. 
 Ripples gently nudge fish
 Lillies float up to the surface periodically 
-"	"You're now ready to apply what you’ve learned and write your own reflection. The AI will act as a conversational partner, guiding you through Kolb's cycle. We recommend spending 20 minutes here.
+","You're now ready to apply what you’ve learned and write your own reflection. The AI will act as a conversational partner, guiding you through Kolb's cycle. We recommend spending 20 minutes here.
 
 
-"		"*Display the rubric text in a panel, overlaid on the game scene
+",,"*Display the rubric text in a panel, overlaid on the game scene
 *The link leads onto the next slid"
-4	Reflective writing				"*Chatbot interface
+4,Reflective writing,,,,"*Chatbot interface
 *System prompt for the API call can be found here:
 system_prompts/chatbot_system_prompt.xml 
 "
-5	Reflective writing			AE	"*Chatbot interface
+5,Reflective writing,,,AE,"*Chatbot interface
 *Ask the user one question per phase of the cycle to help them reflect on the lesson
 "
-4	Reflective writing		"You may also book a session with one of our mentors. Please follow this link and choose a suitable time  from our calendar.
+4,Reflective writing,,"You may also book a session with one of our mentors. Please follow this link and choose a suitable time  from our calendar.
 
 [link] https://calendar.app.google/rDtJ8RUnV68WbJRb6
 
@@ -214,5 +216,5 @@ This one-hour guided session is an opportunity for you to explore a critical inc
 You are also welcome to invite colleagues. Group reflection is an excellent way to build a community of practice. 
 
 
-"	AE	
-5	Grounding Activity				
+",AE,
+5,Grounding Activity,,,,
